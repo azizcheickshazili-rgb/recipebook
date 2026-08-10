@@ -1,0 +1,51 @@
+name: Build APK
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+
+      - name: Installer Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'
+          channel: 'stable'
+
+      - name: Installer les dépendances
+        run: flutter pub get
+
+      - name: Générer et committer les fichiers Android manquants
+        run: |
+          if [ ! -d "android" ]; then
+            echo "Dossier android/ absent : génération..."
+            flutter create . --platforms=android
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add android .gitignore
+            git commit -m "chore: ajoute les fichiers de plateforme Android [skip ci]"
+            git push
+          else
+            echo "Dossier android/ déjà présent, rien à faire."
+          fi
+
+      - name: Lancer les tests
+        run: flutter test
+
+      - name: Compiler l'APK (release)
+        run: flutter build apk --release
+
+      - name: Publier l'APK comme artefact téléchargeable
+        uses: actions/upload-artifact@v4
+        with:
+          name: recipebook-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
