@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../state/app_state.dart';
 import 'main_scaffold.dart';
 
@@ -9,7 +10,7 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appState = AppStateScope.of(context);
+    final appState = context.watch<AppState>();
     final isDark = appState.themeMode == ThemeMode.dark;
 
     return MainScaffold(

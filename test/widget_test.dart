@@ -1,12 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:recipebook/main.dart';
-import 'package:recipebook/state/app_state.dart';
 
 void main() {
   testWidgets('L\'écran d\'accueil affiche le titre et des recettes',
       (WidgetTester tester) async {
-    await tester.pumpWidget(RecipeBookApp(appState: AppState()));
+    await tester.pumpWidget(const RecipeBookApp());
     await tester.pumpAndSettle();
 
     expect(find.text('RecipeBook'), findsOneWidget);
@@ -15,7 +13,7 @@ void main() {
 
   testWidgets('La recherche filtre la liste des recettes',
       (WidgetTester tester) async {
-    await tester.pumpWidget(RecipeBookApp(appState: AppState()));
+    await tester.pumpWidget(const RecipeBookApp());
     await tester.pumpAndSettle();
 
     await tester.enterText(find.byType(TextField), 'Tiramisu');
@@ -25,5 +23,16 @@ void main() {
     // de recherche lui-même qui contient aussi le texte tapé.
     expect(find.widgetWithText(Card, 'Tiramisu'), findsOneWidget);
     expect(find.text('Poulet Yassa'), findsNothing);
+  });
+
+  testWidgets('La navigation basse permet d\'atteindre les Réglages',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(const RecipeBookApp());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Réglages'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Thème sombre'), findsOneWidget);
   });
 }

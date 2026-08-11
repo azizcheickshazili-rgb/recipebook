@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../state/app_state.dart';
 import '../widgets/empty_state.dart';
 import '../widgets/recipe_card.dart';
@@ -11,7 +12,7 @@ class FavoritesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appState = AppStateScope.of(context);
+    final appState = context.watch<AppState>();
     final favorites = appState.favoriteRecipes;
 
     return MainScaffold(

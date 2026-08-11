@@ -10,6 +10,7 @@ class Recipe {
   final String emoji;
   final String difficulty; // Facile / Moyen / Difficile
   final int prepTimeMinutes;
+  final int servings;
   final List<String> ingredients;
   final double rating;
 
@@ -26,6 +27,7 @@ class Recipe {
     required this.difficulty,
     required this.prepTimeMinutes,
     required this.ingredients,
+    this.servings = 4,
     this.rating = 4.0,
     this.isCustom = false,
   });
@@ -37,6 +39,7 @@ class Recipe {
     String? emoji,
     String? difficulty,
     int? prepTimeMinutes,
+    int? servings,
     List<String>? ingredients,
     double? rating,
     bool? isCustom,
@@ -49,6 +52,7 @@ class Recipe {
       emoji: emoji ?? this.emoji,
       difficulty: difficulty ?? this.difficulty,
       prepTimeMinutes: prepTimeMinutes ?? this.prepTimeMinutes,
+      servings: servings ?? this.servings,
       ingredients: ingredients ?? this.ingredients,
       rating: rating ?? this.rating,
       isCustom: isCustom ?? this.isCustom,

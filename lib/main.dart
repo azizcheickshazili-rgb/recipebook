@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'router/app_router.dart';
 import 'state/app_state.dart';
 import 'theme/app_theme.dart';
 
 void main() {
-  runApp(RecipeBookApp(appState: AppState()));
+  runApp(const RecipeBookApp());
 }
 
 class RecipeBookApp extends StatelessWidget {
-  final AppState appState;
-
-  const RecipeBookApp({super.key, required this.appState});
+  const RecipeBookApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return AppStateScope(
-      state: appState,
-      child: ListenableBuilder(
-        listenable: appState,
-        builder: (context, _) {
+    return ChangeNotifierProvider(
+      create: (_) => AppState(),
+      child: Consumer<AppState>(
+        builder: (context, appState, _) {
           return MaterialApp.router(
             title: 'RecipeBook',
             debugShowCheckedModeBanner: false,

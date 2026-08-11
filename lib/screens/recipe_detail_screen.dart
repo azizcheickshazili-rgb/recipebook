@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import '../state/app_state.dart';
 import '../widgets/favorite_button.dart';
@@ -13,7 +14,7 @@ class RecipeDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appState = AppStateScope.of(context);
+    final appState = context.watch<AppState>();
     final recipe = appState.recipeById(recipeId);
 
     if (recipe == null) {
@@ -95,6 +96,10 @@ class RecipeDetailScreen extends StatelessWidget {
                       Chip(
                         avatar: const Icon(Icons.timer_outlined, size: 18),
                         label: Text('${recipe.prepTimeMinutes} min'),
+                      ),
+                      Chip(
+                        avatar: const Icon(Icons.people_outline, size: 18),
+                        label: Text('${recipe.servings} pers.'),
                       ),
                       Chip(
                         avatar: CircleAvatar(

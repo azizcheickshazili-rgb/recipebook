@@ -24,8 +24,9 @@ extension SortOptionLabel on SortOption {
 }
 
 /// État global partagé de l'application : thème clair/sombre, préférences
-/// d'affichage, liste des recettes et favoris. Diffusé via [AppStateScope]
-/// (InheritedNotifier), donc sans dépendance externe de gestion d'état.
+/// d'affichage, liste des recettes et favoris. Diffusé via `provider`
+/// (`ChangeNotifierProvider` dans `main.dart`), donc accessible partout via
+/// `context.watch<AppState>()` ou `context.read<AppState>()`.
 class AppState extends ChangeNotifier {
   AppState() : _recipes = RecipeRepository.initialRecipes();
 
@@ -107,21 +108,5 @@ class AppState extends ChangeNotifier {
     } catch (_) {
       return null;
     }
-  }
-}
-
-/// Rend [AppState] disponible à toute la sous-arborescence sans package tiers.
-class AppStateScope extends InheritedNotifier<AppState> {
-  const AppStateScope({
-    super.key,
-    required AppState state,
-    required super.child,
-  }) : super(notifier: state);
-
-  static AppState of(BuildContext context) {
-    final scope =
-        context.dependOnInheritedWidgetOfExactType<AppStateScope>();
-    assert(scope != null, 'AppStateScope introuvable dans l\'arbre de widgets');
-    return scope!.notifier!;
   }
 }
